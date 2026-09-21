@@ -3,7 +3,7 @@
 
 import           Control.Exception
 import           Control.Monad
-import           Data.Binary.Strict.Get
+import           Data.Serialize.Get
 import qualified Data.ByteString        as B
 import           Data.Monoid
 import           EOT

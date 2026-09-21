@@ -17,7 +17,7 @@
 #
 # resolver: ./custom-snapshot.yaml
 # resolver: https://example.com/snapshots/2018-01-01.yaml
-resolver: lts-18.5
+resolver: lts-22.43
 
 # User packages to be built.
 # Various formats can be used as shown in the example below.
@@ -44,7 +44,7 @@ packages:
 #   commit: e7b331f14bcffb8367cd58fbfc8b40ec7642100a
 #
 extra-deps:
-  - binary-strict-0.4.8.6@sha256:456da8c1452a18349fbb02134ba608cf7420014cb93e9c39e7e4b99de1c48a7e,2222
+  - cereal-0.5.8.3
 
 # Override default flag values for local packages and extra-deps
 # flags: {}
@@ -71,3 +71,4 @@ extra-deps:
 # compiler-check: newer-minor
 
 local-bin-path: .
+

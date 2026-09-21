@@ -6,7 +6,7 @@ module OTF(
   , parse
 ) where
 
-import           Data.Binary.Strict.Get
+import           Data.Serialize.Get
 import qualified Data.ByteString        as B
 import           Data.Map
 import           Font

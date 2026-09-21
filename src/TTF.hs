@@ -24,7 +24,7 @@ module TTF(
 ) where
 
 import           Control.Monad
-import           Data.Binary.Strict.Get
+import           Data.Serialize.Get
 import           Data.Bits
 import qualified Data.ByteString        as B
 import           Data.List

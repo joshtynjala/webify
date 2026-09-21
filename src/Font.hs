@@ -41,7 +41,7 @@ module Font(
 ) where
 
 import           Control.Monad
-import           Data.Binary.Strict.Get
+import           Data.Serialize.Get
 import qualified Data.ByteString          as B
 import           Data.ByteString.Char8    (unpack)
 import           Data.Int
