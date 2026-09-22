@@ -7,31 +7,68 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        ghc: ['8.0.2', '8.10.4']
-        os: [ubuntu-latest, macOS-latest, windows-latest]
-    name: Haskell GHC ${{ matrix.ghc }} ${{ matrix.os }}
+        os: [ubuntu-24.04, ubuntu-24.04-arm, macos-15, macos-15-intel, windows-latest]
     steps:
-      - uses: actions/checkout@v2
-      - name: Setup Haskell
-        uses: haskell/actions/setup@v1
+      - uses: actions/checkout@v7
+      - uses: haskell-actions/setup@v2
         with:
-          ghc-version: ${{ matrix.ghc }}
+          ghc-version: '9.6.6'
           enable-stack: true
           stack-version: 'latest'
-      - run: stack build
-      - run: stack install
+      - run: |
+          stack build
+          stack install
+
       - run: cp webify webify-linux-amd64
-        if: contains(matrix.os, 'ubuntu')
-      - run: cp webify webify-darwin-amd64
-        if: contains(matrix.os, 'mac')
-      - run: cp webify.exe webify-windows-amd64.exe
-        if: contains(matrix.os, 'windows')
-      - name: Release
-        uses: softprops/action-gh-release@v1
-        if: ${{ startsWith(github.ref, 'refs/tags') && matrix.ghc == '8.10.4' }}
+        if: contains(matrix.os, 'ubuntu') && !contains(matrix.os, 'arm')
+      - uses: actions/upload-artifact@v7
+        if: contains(matrix.os, 'ubuntu') && !contains(matrix.os, 'arm')
         with:
-          draft: true
-          files: |
-            webify-*
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          name: webify-linux-amd64
+          path: webify-linux-amd64
+          if-no-files-found: error
+
+      - run: cp webify webify-linux-arm64
+        if: contains(matrix.os, 'ubuntu') && contains(matrix.os, 'arm')
+      - uses: actions/upload-artifact@v7
+        if: contains(matrix.os, 'ubuntu') && contains(matrix.os, 'arm')
+        with:
+          name: webify-linux-arm64
+          path: webify-linux-arm64
+          if-no-files-found: error
+
+      - run: cp webify webify-darwin-amd64
+        if: contains(matrix.os, 'mac') && contains(matrix.os, 'intel')
+      - uses: actions/upload-artifact@v7
+        if: contains(matrix.os, 'mac') && contains(matrix.os, 'intel')
+        with:
+          name: webify-darwin-amd64
+          path: webify-darwin-amd64
+          if-no-files-found: error
+
+      - run: cp webify webify-darwin-arm64
+        if: contains(matrix.os, 'mac') && !contains(matrix.os, 'intel')
+      - uses: actions/upload-artifact@v7
+        if: contains(matrix.os, 'mac') && !contains(matrix.os, 'intel')
+        with:
+          name: webify-darwin-arm64
+          path: webify-darwin-arm64
+          if-no-files-found: error
+
+      - run: cp webify.exe webify-windows-amd64.exe
+        if: contains(matrix.os, 'windows') && !contains(matrix.os, 'arm')
+      - uses: actions/upload-artifact@v7
+        if: contains(matrix.os, 'windows') && !contains(matrix.os, 'arm')
+        with:
+          name: webify-windows-amd64
+          path: webify-windows-amd64.exe
+          if-no-files-found: error
+
+      - run: cp webify.exe webify-windows-arm64.exe
+        if: contains(matrix.os, 'windows') && contains(matrix.os, 'arm')
+      - uses: actions/upload-artifact@v7
+        if: contains(matrix.os, 'windows') && contains(matrix.os, 'arm')
+        with:
+          name: webify-windows-arm64
+          path: webify-windows-arm64.exe
+          if-no-files-found: error

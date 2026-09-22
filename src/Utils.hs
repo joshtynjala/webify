@@ -25,9 +25,9 @@ import           Debug.Trace
 import           Text.Printf
 import qualified Text.XML.Generator                 as X
 
-fromRight :: (Either String t2, t) -> t2
-fromRight (Right x, _) = x
-fromRight (Left y, _) = error y
+fromRight :: (Either String a) -> a
+fromRight (Right x) = x
+fromRight (Left y) = error y
 
 substr :: Int -> Int -> B.ByteString -> B.ByteString
 substr s l = B.take l . B.drop s
